@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import environ
 import os
+import dj_database_url
 
 env = environ.Env(
     # set casting, default value
@@ -83,8 +84,11 @@ WSGI_APPLICATION = 'twnyorker.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
-DATABASES = {'default': env.db('DATABASE_URL')}
+DATABASES = {}
+if env('TWNYORKER_RUNLOCAL') == 'True':
+    DATABASES['default'] = env.db('DATABASE_URL')
+else:
+    DATABASES['default'] = dj_database_url.config()
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
