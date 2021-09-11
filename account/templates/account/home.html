@@ -1,0 +1,50 @@
+{% extends "account/base.html" %}
+{% load static %}
+{% block content %}
+<div class="wrap">
+    <div>
+        <img class="bg" src="{% static 'account/images/aaron-sebastian-XWl8Pu3HrgY-unsplash.jpg' %}" {% if user %}style="filter: blur(8px); -webkit-filter: blur(8px);"{% endif %}>
+    </div>
+    {% if user %}
+        <div class="bg-text">
+            <h1>Hi, {{ user.first_name }}</h1>
+        </div>
+    {% endif %}
+    <div class="content d-flex">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-md-4">
+                    <div class="card home">
+                        <div class="card-body">
+                            <h4 class="card-title">THE LATEST ARTICLE</h4>
+                            <p class="card-text">{{ article.created_date|date:"M d, Y" }}</p>
+                            <p class="card-text">{{ article.title|truncatechars:25 }}</p>
+                            <p class="card-text">{{ article.introduction|safe|truncatechars:150 }}<a href="{{ article.get_absolute_url }}" class="hyper-link"><span>Read more</span></a></p>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="card home">
+                        <div class="card-body">
+                            <h4 class="card-title">THE LATEST VIDEO</h4>
+                            <div id="youtube_embed">
+                                <iframe width="100%" src="https://www.youtube.com/embed/YZGB9UFMXEQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="card home">
+                        <div class="card-body">
+                            <h4 class="card-title">ENGLISH CLUB</h4>
+                            <p class="card-text">Upcoming: 08/15/21</p>
+                            <p class="card-text">Click here to see available spots!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock%}

@@ -1,0 +1,33 @@
+{% extends "account/base.html" %}
+{% load static %}
+{% block content %}
+<div class="wrap">
+    <div class="container">
+        <div class="card" id="signup">
+            <div class="card-body">
+                <h5 class="card-title">{% if signup %}SIGN UP{% else %}Account Settings - {{ user.email }}{% endif %}</h5>
+                <form action="{% if signup %}signup{% else %}settings{% endif %}" method="post">
+                    {% csrf_token %}
+                    {% for field in create_form %}
+                        <div class="fieldWrapper">
+                            {{ field }}
+                            {% for error in field.errors %}
+                                <div class="alert-danger">
+                                    <strong>{{ error|escape }}</strong>
+                                </div>
+                            {% endfor %}
+                            {% if field.help_text %}
+                            <p class="help">{{ field.help_text|safe }}</p>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <input class="btn btn-primary float-end" type="submit" value="{% if signup %}Submit{% else %}Update{% endif %}">
+                </form>
+                {% if signup %}
+                    <a href="/signin" style="text-decoration: none; margin-left: 1rem;"><span>Login Now</span></a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock%}

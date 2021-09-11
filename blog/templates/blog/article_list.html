@@ -1,0 +1,76 @@
+{% extends "account/base.html" %}
+{% load static %}
+{% block content %}
+<style type="text/css">
+    body {
+        background-color: #efefef;
+    }
+    .blog-img {
+        top: -3rem;
+        width: 40%;
+        position: absolute;
+        opacity: 0.5;
+    }
+    .blog-list li {
+        list-style-type: none;
+        display: flex;
+        margin-bottom: 1rem;
+    }
+    .blog-list li a {
+        color: #fff;
+        padding: .5rem 1rem;
+        text-decoration: none;
+        background-color: #7f7f7f;
+        border-radius: 25px;
+    }
+    .blog-list li a:hover {
+        color: #000;
+        background-color: #00cecb;
+        /*position: relative;
+        top: -3px;*/
+    }
+    .container {
+        margin-top: 3rem;
+    }
+    @media (max-width: 960px) {
+        h1 {
+            margin: 1rem;
+        }
+        .container {
+            margin-top: 1rem;
+        }
+        .blog-img {
+            top: 4rem;
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            opacity: 0.2;
+            z-index: -1;
+        }
+    }
+</style>
+<div class="wrap">
+    <div>
+        <img class="blog-img" src="{% static 'account/images/sam-trotman-2f8SXXbP9nY-unsplash.jpg' %}">
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-6"></div>
+            <div class="col-12 col-md-6">
+                <h1>ARTICLES</h1>
+                <ul class="post-meta blog-list">
+                    {% for article in object_list %}
+                        <li>
+                            <a href="{{ article.get_absolute_url }}">
+                                <span style="margin-right:1rem;">{{ article.created_date|date:"m/d/y" }}</span>
+                                <span>{{ article.title }}</span>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div style="height: 5rem; position: relative;"></div>
+</div>
+{% endblock%}
