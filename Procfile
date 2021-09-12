@@ -1,1 +1,3 @@
-web: gunicorn twnyorker:app --max-requests 1200
+web: gunicorn twnyorker.wsgi:application --log-file - --log-level debug
+python manage.py collectstatic --noinput
+manage.py migrate
