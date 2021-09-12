@@ -6,7 +6,8 @@ import sys
 
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'twnyorker.settings')
+    settings_configuration = os.environ.get('SETTINGS_CONFIGURATION', 'twnyorker.settings')
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", settings_configuration)
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
