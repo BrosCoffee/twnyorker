@@ -1,1 +1,1 @@
-web: gunicorn myproject.wsgi
+web: gunicorn twnyorker:app --max-requests 1200
