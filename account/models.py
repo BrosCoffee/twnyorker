@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
+from datetime import datetime
+import math
 
 class SiteUserManager(BaseUserManager):
     def create_user(self, email, first_name, last_name, date_of_birth, password=None):
@@ -64,6 +66,16 @@ class SiteUser(AbstractBaseUser):
         "Does the user have permissions to view the app `app_label`?"
         # Simplest possible answer: Yes, always
         return True
+
+    def age(self, selected_datetime_obj=None):
+        # selected_datetime_obj allow users to enter any designated date
+        today = selected_datetime_obj if selected_datetime_obj else datetime.now()
+        date_of_birth = datetime.strptime(str(self.date_of_birth), '%Y-%m-%d')
+        age = math.floor((today - date_of_birth).days/ 365.2425)
+        return age
+
+    def is_under_age(self, selected_datetime_obj=None, age=18):
+        return True if self.age(selected_datetime_obj) < age else False
 
     @property
     def is_staff(self):
