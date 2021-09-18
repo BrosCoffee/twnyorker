@@ -68,6 +68,10 @@
         <div class="row">
             <div class="col-12 col-md-6"></div>
             <div class="col-12 col-md-6">
+                <form class="form-inline my-2 mb-lg-4 d-flex">
+                    <input class="form-control mr-sm-2" type="search" name="title" placeholder="Search Articles" aria-label="Search">
+                    <button class="btn btn-info my-sm-0" type="submit">Search</button>
+                </form>
                 <h1>ARTICLES</h1>
                 <ul class="post-meta blog-list">
                     {% for article in object_list %}
