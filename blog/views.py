@@ -7,11 +7,10 @@ class ArticleListView(ListView):
     paginate_by = 10
     model = Article
     template_name = 'blog/article_list.html'
-    ordering = ['-created_date']
 
     def get_queryset(self):
         title = self.request.GET.get('title', '')
-        object_list = self.model.objects.all()
+        object_list = self.model.objects.all().order_by('-created_date')
         if title:
             object_list = object_list.filter(title__icontains=title)
         return object_list

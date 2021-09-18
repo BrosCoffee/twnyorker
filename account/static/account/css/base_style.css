@@ -78,7 +78,7 @@ footer span {
     background-color: #efefef;
 }
 #article_detail {
-    width: 60%;
+    width: 100%;
 }
 #article_detail .card-body {
     padding: 3rem;
@@ -162,10 +162,15 @@ ul.post-meta {
     .container {
         margin-top: 1rem;
     }
-    #signup, #article_detail {
+    #signup {
         width: 90%;
         height: auto;
         margin: 2rem auto 0;
+    }
+    #article_detail {
+        width: 100%;
+        height: auto;
+        margin: 2rem 0;
     }
     #article_detail .card-body {
         padding: 1rem;

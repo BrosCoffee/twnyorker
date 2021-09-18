@@ -1,78 +1,20 @@
 {% extends "account/base.html" %}
 {% load static %}
 {% block content %}
-<style type="text/css">
-    body {
-        background-color: #efefef;
-    }
-    .blog-img {
-        top: -3rem;
-        width: 40%;
-        position: absolute;
-        opacity: 0.5;
-    }
-    .blog-list li {
-        list-style-type: none;
-        display: flex;
-        margin-bottom: 1rem;
-    }
-    .blog-list li a {
-        color: #fff;
-        padding: .5rem 1rem;
-        text-decoration: none;
-        background-color: #7f7f7f;
-        border-radius: 25px;
-    }
-    .blog-list li a:hover {
-        color: #000;
-        background-color: #00cecb;
-        /*position: relative;
-        top: -3px;*/
-    }
-    .container {
-        margin-top: 3rem;
-    }
-    .step-links {
-        margin: 0 auto;
-        font-size: 1.5rem;
-    }
-    .step-links a {
-        margin: 0 1rem;
-        color: #00cecb;
-    }
-    .post-meta li {
-        margin: 1rem;
-    }
-    @media (max-width: 960px) {
-        h1 {
-            margin: 1rem;
-        }
-        .container {
-            margin-top: 1rem;
-        }
-        .blog-img {
-            top: 4rem;
-            width: 100%;
-            height: 100%;
-            position: fixed;
-            opacity: 0.2;
-            z-index: -1;
-        }
-    }
-</style>
+<link rel="stylesheet" type="text/css" href="{% static 'blog/css/article_list.css' %}">
 <div class="wrap">
     <div>
         <img class="blog-img" src="{% static 'account/images/sam-trotman-2f8SXXbP9nY-unsplash.jpg' %}">
     </div>
     <div class="container">
         <div class="row">
-            <div class="col-12 col-md-6"></div>
-            <div class="col-12 col-md-6">
-                <form class="form-inline my-2 mb-lg-4 d-flex">
+            <div class="col-12 col-xl-6"></div>
+            <div class="col-12 col-xl-6">
+                <form class="form-inline my-2 mb-lg-4 d-flex search-bar">
                     <input class="form-control mr-sm-2" type="search" name="title" placeholder="Search Articles" aria-label="Search">
                     <button class="btn btn-info my-sm-0" type="submit">Search</button>
                 </form>
-                <h1>ARTICLES</h1>
+                <h1>ARTICLES</h1><span class="article-counter">({{ object_list.count }})</span>
                 <ul class="post-meta blog-list">
                     {% for article in object_list %}
                         <li>
