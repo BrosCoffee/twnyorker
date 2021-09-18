@@ -15,6 +15,11 @@ class ArticleListView(ListView):
             object_list = object_list.filter(title__icontains=title)
         return object_list
 
+    def get_context_data(self, **kwargs):
+        context = super(ArticleListView, self).get_context_data(**kwargs)
+        context['count'] = self.get_queryset().count()
+        return context
+
 class ArticleDetailView(DetailView):
     model = Article
     template_name = 'blog/article_detail.html'
