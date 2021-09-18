@@ -14,7 +14,7 @@
                     <input class="form-control mr-sm-2" type="search" name="title" placeholder="Search Articles" aria-label="Search">
                     <button class="btn btn-info my-sm-0" type="submit">Search</button>
                 </form>
-                <h1>ARTICLES</h1><span class="article-counter">({{ count }})</span>
+                <h1>ARTICLES</h1><span class="article-counter">({{ page_obj.paginator.count }})</span>
                 <ul class="post-meta blog-list">
                     {% for article in object_list %}
                         <li>
