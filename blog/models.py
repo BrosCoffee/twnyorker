@@ -28,4 +28,8 @@ class Tag(models.Model):
     description = models.TextField()
 
     def __str__(self):
-        return self.title
+        return self.title.replace('-', ' ').title()
+
+    def save(self, *args, **kwargs):
+        self.title = self.title.replace(' ', '-').lower()
+        return super().save(*args, **kwargs)
