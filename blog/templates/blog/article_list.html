@@ -1,5 +1,6 @@
 {% extends "account/base.html" %}
 {% load static %}
+{% load clean_pagination_url %}
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'blog/css/article_list.css' %}">
 <div class="wrap">
@@ -33,13 +34,13 @@
                 </ul>
                 <div class="pagination">
                     <span class="step-links">
-                        <a href="?page=1"><i class="fas fa-angle-double-left"></i></a>
-                        <a href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% endif %}"><i class="fas fa-angle-left"></i></a>
+                        <a href="{% if '?title=' in request.get_full_path %}{{ request.get_full_path|clean_pagination_url }}&page=1{% else %}?page=1{% endif %}"><i class="fas fa-angle-double-left"></i></a>
+                        <a href="{% if page_obj.has_previous and '?title=' in request.get_full_path %}{{ request.get_full_path|clean_pagination_url }}&page={{ page_obj.previous_page_number }}{% elif page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% endif %}"><i class="fas fa-angle-left"></i></a>
                         <span class="current">
                             {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
                         </span>
-                        <a href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }}{% endif %}"><i class="fas fa-angle-right"></i></a>
-                        <a href="?page={{ page_obj.paginator.num_pages }}"><i class="fas fa-angle-double-right"></i></a>
+                        <a href="{% if page_obj.has_next and '?title=' in request.get_full_path %}{{ request.get_full_path|clean_pagination_url }}&page={{ page_obj.next_page_number }}{% elif page_obj.has_next %}?page={{ page_obj.next_page_number }}{% endif %}"><i class="fas fa-angle-right"></i></a>
+                        <a href="{% if '?title=' in request.get_full_path %}{{ request.get_full_path|clean_pagination_url }}&page={{ page_obj.paginator.num_pages }}{% else %}?page={{ page_obj.paginator.num_pages }}{% endif %}"><i class="fas fa-angle-double-right"></i></a>
                     </span>
                 </div>
             </div>
