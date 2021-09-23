@@ -23,6 +23,7 @@
                         </div>
                     {% endfor %}
                     <input class="btn btn-primary float-end" type="submit" value="Login">
+                    <input type="hidden" name="next" value="{{ request.GET.next }}" />
                 </form>
                 <a href="/signup" style="text-decoration: none; margin-left: 1rem;"><span>Register Now</span></a>
                 <!-- <a href="/signup" style="text-decoration: none; margin-left: 1.5rem;"><span>Reset Password</span></a> -->
