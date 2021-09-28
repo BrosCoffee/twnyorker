@@ -1,5 +1,29 @@
 {% extends "account/base.html" %}
 {% load static %}
 {% block content %}
-<h1>Testing Calendar</h1>
+<link rel="stylesheet" type="text/css" href="{% static 'club/css/main.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'club/css/calendar.css' %}">
+<script src="{% static 'club/js/main.js' %}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'timeGridWeek',
+            height: 650,
+            allDaySlot: false,
+            nowIndicator: true,
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'timeGridWeek,dayGridMonth',
+            },
+        });
+        calendar.render();
+    });
+</script>
+<div class="wrap">
+    <div class="container">
+        <div id='calendar'></div>
+    </div>
+</div>
 {% endblock %}
