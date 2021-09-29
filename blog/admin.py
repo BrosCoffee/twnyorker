@@ -7,7 +7,7 @@ class ArticleAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
 
     def get_tags(self, obj):
-        return '\n'.join([tag.title for tag in obj.tags.all()])
+        return ', '.join([tag.title for tag in obj.tags.all()])
 
     get_tags.short_description = 'Tags'
 
