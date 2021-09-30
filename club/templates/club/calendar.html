@@ -18,13 +18,77 @@
                 right: 'timeGridWeek,dayGridMonth',
             },
             events: {{ events_list|safe }},
+            eventClick: onEventClick,
+            eventMouseEnter: onEventMouseEnter,
+            eventMouseLeave: onEventMouseLeave,
         });
+
+        function onEventClick(info) {
+            $.ajax({
+                type: 'POST',
+                url: '/english-club/',
+                data: {
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    'eventPk': info.event.extendedProps.eventPk,
+                    'userPk': {{ request.user.pk }},
+                },
+                success: function (data) {
+                    if (data.num_participants < data.max_participants) {
+                        $('#bookModal').modal('show');
+                        $('#bookModalLabel').text(info.event.title);
+                        // TO-DO: UX/UI improvement
+                        let eventHtml = `
+                            <div>Host: ` + data.host + `</div>
+                            <div>Time: ` + data.start_time + `-` + data.end_time +`</div>
+                            <div>Booking Deadline: ` + data.signup_deadline + `</div>
+                            <div>Booking Status: `+ data.num_participants + '/' + data.max_participants +`</div>
+                        `
+                        if (data.note) {
+                            eventHtml += `
+                                <div>Note: ` + data.note + `</div>
+                            `
+                        }
+                        $('#bookModalContent').html(eventHtml);
+                    } else {
+                        // TO-DO: Implement Swal instead of using window alert
+                        alert('Fully Booked!');
+                    }
+                }
+            });
+
+        }
+
+        function onEventMouseEnter(info) {
+            console.log('mouse entered!');
+        }
+
+        function onEventMouseLeave(info) {
+            console.log('mouse left!');
+        }
+
         calendar.render();
     });
 </script>
 <div class="wrap">
     <div class="container">
         <div id='calendar'></div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="bookModal" tabindex="-1" aria-labelledby="bookModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="bookModalLabel"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="bookModalContent">
+            ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Book Now</button>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

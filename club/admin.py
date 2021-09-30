@@ -3,7 +3,7 @@ from .models import Event
 from pytz import timezone
 
 class EventAdmin(admin.ModelAdmin):
-    list_display = ('host', 'created_date', 'title', 'get_tags', 'note', 'get_members', 'get_date', 'get_start_time', 'get_end_time', 'signup_deadline', 'max_participants',)
+    list_display = ('host', 'get_date', 'get_start_time', 'get_end_time', 'title', 'get_tags', 'note', 'get_members', 'signup_deadline', 'max_participants',)
     filter_horizontal = ('tags',)
 
     def get_tags(self, obj):
@@ -13,13 +13,13 @@ class EventAdmin(admin.ModelAdmin):
         return ', '.join([member.get_full_name() for member in obj.members.all()])
 
     def get_date(self, obj):
-        return obj.start_time.astimezone(timezone('Asia/Taipei')).strftime('%Y-%m-%d')
+        return obj.start_time.astimezone(timezone('Asia/Taipei')).strftime('%Y/%m/%d')
 
     def get_start_time(self, obj):
-        return obj.start_time.astimezone(timezone('Asia/Taipei')).strftime('%H:%M:%S')
+        return obj.start_time.astimezone(timezone('Asia/Taipei')).strftime('%I:%M %p')
 
     def get_end_time(self, obj):
-        return obj.end_time.astimezone(timezone('Asia/Taipei')).strftime('%H:%M:%S')
+        return obj.end_time.astimezone(timezone('Asia/Taipei')).strftime('%I:%M %p')
 
     get_tags.short_description       = 'Tags'
     get_members.short_description    = 'Members'
