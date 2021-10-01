@@ -24,6 +24,7 @@
         });
 
         function onEventClick(info) {
+            let timeNow = new Date();
             $.ajax({
                 type: 'POST',
                 url: '/english-club/',
@@ -31,27 +32,36 @@
                     'csrfmiddlewaretoken': '{{ csrf_token }}',
                     'eventPk': info.event.extendedProps.eventPk,
                     'userPk': {{ request.user.pk }},
+                    'timeNow': timeNow.toString(),
                 },
                 success: function (data) {
-                    if (data.num_participants < data.max_participants) {
-                        $('#bookModal').modal('show');
-                        $('#bookModalLabel').text(info.event.title);
-                        // TO-DO: UX/UI improvement
-                        let eventHtml = `
-                            <div>Host: ` + data.host + `</div>
-                            <div>Time: ` + data.start_time + `-` + data.end_time +`</div>
-                            <div>Booking Deadline: ` + data.signup_deadline + `</div>
-                            <div>Booking Status: `+ data.num_participants + '/' + data.max_participants +`</div>
-                        `
-                        if (data.note) {
-                            eventHtml += `
-                                <div>Note: ` + data.note + `</div>
-                            `
-                        }
-                        $('#bookModalContent').html(eventHtml);
-                    } else {
+                    // Step 1: Check past event - Done
+                    // Step 2: Check fully booked - Done
+                    // Step 3: Check age restrictions
+                    if (data.expire) {
                         // TO-DO: Implement Swal instead of using window alert
-                        alert('Fully Booked!');
+                        alert('Book Deadline Passed!');
+                    } else {
+                        if (data.num_participants < data.max_participants) {
+                            $('#bookModal').modal('show');
+                            $('#bookModalLabel').text(info.event.title);
+                            // TO-DO: UX/UI improvement
+                            let eventHtml = `
+                                <div>Host: ` + data.host + `</div>
+                                <div>Time: ` + data.start_time + `-` + data.end_time +`</div>
+                                <div>Booking Deadline: ` + data.signup_deadline + `</div>
+                                <div>Booking Status: `+ data.num_participants + '/' + data.max_participants +`</div>
+                            `
+                            if (data.note) {
+                                eventHtml += `
+                                    <div>Note: ` + data.note + `</div>
+                                `
+                            }
+                            $('#bookModalContent').html(eventHtml);
+                        } else {
+                            // TO-DO: Implement Swal instead of using window alert
+                            alert('Fully Booked!');
+                        }
                     }
                 }
             });

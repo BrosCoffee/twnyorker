@@ -3,7 +3,7 @@ from .models import Event
 from pytz import timezone
 
 class EventAdmin(admin.ModelAdmin):
-    list_display = ('host', 'get_date', 'get_start_time', 'get_end_time', 'title', 'get_tags', 'note', 'get_members', 'signup_deadline', 'max_participants',)
+    list_display = ('host', 'get_date', 'get_start_time', 'get_end_time', 'title', 'get_tags', 'age_restrictions', 'note', 'get_members', 'signup_deadline', 'max_participants',)
     filter_horizontal = ('tags',)
 
     def get_tags(self, obj):
