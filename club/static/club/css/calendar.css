@@ -12,6 +12,13 @@
     text-decoration: none;
     color: #000;
 }
+.col-4 {
+    text-align: right;
+}
+.col-8 span {
+    font-weight: 900;
+    color: green;
+}
 
 @media (min-width: 960px) {
     .container {
