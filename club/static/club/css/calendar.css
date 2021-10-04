@@ -16,6 +16,9 @@
     text-align: right;
 }
 .col-8 span {
+    border: green 1px solid;
+    border-radius: 5px;
+    padding:.15rem;
     font-weight: 900;
     color: green;
 }

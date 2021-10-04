@@ -52,7 +52,7 @@
                                 <div class="row">
                                     <div class="col-4">Host: </div><div class="col-8">` + data.host + `</div>
                                     <div class="col-4">Time: </div><div class="col-8">` + data.start_time + `-` + data.end_time +`</div>
-                                    <div class="col-4">Status: </div><div class="col-8"><span>Booked</span> `+ data.num_participants + '/' + data.max_participants +` members</div>
+                                    <div class="col-4">Status: </div><div class="col-8">`+ data.num_participants + '/' + data.max_participants +` members <span>Booked</span></div>
                                     <div class="col-4">Deadline: </div><div class="col-8">` + data.signup_deadline + `</div>
                                 </div>
                             `
@@ -69,27 +69,37 @@
                             $('[name="selectedEvent"]').val(info.event.extendedProps.eventPk);
                         } else {
                             if (data.num_participants < data.max_participants) {
-                                $('#bookModal').modal('show');
-                                $('#bookModalLabel').text(info.event.title);
-                                let eventHtml = `
-                                    <div class="row">
-                                        <div class="col-4">Host: </div><div class="col-8">` + data.host + `</div>
-                                        <div class="col-4">Time: </div><div class="col-8">` + data.start_time + `-` + data.end_time +`</div>
-                                        <div class="col-4">Status: </div><div class="col-8">`+ data.num_participants + '/' + data.max_participants +` members</div>
-                                        <div class="col-4">Deadline: </div><div class="col-8">` + data.signup_deadline + `</div>
-                                    </div>
-                                `
-                                if (data.note) {
-                                    eventHtml += `
+                                if (data.age_restrictions_pass) {
+                                    $('#bookModal').modal('show');
+                                    $('#bookModalLabel').text(info.event.title);
+                                    let eventHtml = `
                                         <div class="row">
-                                            <div class="col-4">Note: </div><div class="col-8">` + data.note + `</div>
+                                            <div class="col-4">Host: </div><div class="col-8">` + data.host + `</div>
+                                            <div class="col-4">Time: </div><div class="col-8">` + data.start_time + `-` + data.end_time +`</div>
+                                            <div class="col-4">Status: </div><div class="col-8">`+ data.num_participants + '/' + data.max_participants +` members</div>
+                                            <div class="col-4">Deadline: </div><div class="col-8">` + data.signup_deadline + `</div>
                                         </div>
                                     `
+                                    if (data.note) {
+                                        eventHtml += `
+                                            <div class="row">
+                                                <div class="col-4">Note: </div><div class="col-8">` + data.note + `</div>
+                                            </div>
+                                        `
+                                    }
+                                    $('#bookModalContent').html(eventHtml);
+                                    $('[name="eventAction"]').val('bookEvent');
+                                    $('[name="selectedUser"]').val({{ request.user.pk }});
+                                    $('[name="selectedEvent"]').val(info.event.extendedProps.eventPk);
+                                } else {
+                                    // TO-DO: Implement Swal instead of using window alert
+                                    let age_restrictions = data.age_restrictions;
+                                    if (age_restrictions === 'AD') {
+                                        alert('You must be older than 18 to book the event.');
+                                    } else {
+                                        alert('You must be younger than 18 to book the event.');
+                                    }
                                 }
-                                $('#bookModalContent').html(eventHtml);
-                                $('[name="eventAction"]').val('bookEvent');
-                                $('[name="selectedUser"]').val({{ request.user.pk }});
-                                $('[name="selectedEvent"]').val(info.event.extendedProps.eventPk);
                             } else {
                                 // TO-DO: Implement Swal instead of using window alert
                                 alert('Fully Booked!');

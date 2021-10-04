@@ -31,6 +31,13 @@ def calendar(request):
                 end_time = selected_event.end_time.astimezone(asia).strftime('%-I:%M %p')
                 max_participants = selected_event.max_participants
                 num_participants = len(selected_event.members.all())
+                age_restrictions = selected_event.age_restrictions
+                if age_restrictions == 'AD':
+                    age_restrictions_pass = True if not user.is_under_age() else False
+                elif age_restrictions == 'YO':
+                    age_restrictions_pass = True if user.is_under_age() else False
+                else: # age_restrictions == 'NR'
+                    age_restrictions_pass = True
                 note = selected_event.note
                 signup_deadline = selected_event.signup_deadline.astimezone(asia).strftime('%Y/%m/%d %-I:%M %p') if selected_event.signup_deadline else None
                 return JsonResponse({
@@ -41,6 +48,8 @@ def calendar(request):
                     'end_time': end_time,
                     'max_participants': max_participants,
                     'num_participants': num_participants,
+                    'age_restrictions': age_restrictions,
+                    'age_restrictions_pass': age_restrictions_pass,
                     'note': note,
                     'signup_deadline': signup_deadline,
                 }, safe=False)
@@ -50,11 +59,18 @@ def calendar(request):
     events = Event.objects.all()
     events_list = []
     for event in events:
+        if event.age_restrictions == 'AD':
+            event_color = '#fc0d15'
+        elif event.age_restrictions == 'YO':
+            event_color = '#8132a8'
+        else:
+            event_color = ''
         events_list.append({
             'title': event.title,
             'eventPk': event.pk,
             'start': event.start_time.astimezone(asia).strftime('%Y-%m-%dT%H:%M:%S'),
             'end': event.end_time.astimezone(asia).strftime('%Y-%m-%dT%H:%M:%S'),
+            'color': event_color,
         })
     if request.method == 'POST':
         event_action = request.POST.get('eventAction')
