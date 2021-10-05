@@ -6,13 +6,16 @@ from .forms import UserCreationForm, UserSignInForm, UserChangeForm
 from .models import *
 from blog.models import Article
 from club.models import Event
+from pytz import timezone
+from datetime import datetime
 
 def home(request):
     user = None
     if request.user.is_authenticated:
         user = request.user
     article = Article.objects.last()
-    club = Event.objects.last()
+    asia = timezone('Asia/Taipei')
+    club = Event.objects.filter(start_time__gte=datetime.now().astimezone(asia)).order_by('start_time').first()
     return render(request, 'account/home.html', {
         'user': user,
         'article': article,
