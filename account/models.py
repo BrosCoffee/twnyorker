@@ -80,3 +80,7 @@ class SiteUser(AbstractBaseUser):
     @property
     def is_staff(self):
         return self.is_admin
+
+    @property
+    def is_superuser(self):
+        return self.is_admin
