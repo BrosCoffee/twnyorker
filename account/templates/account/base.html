@@ -38,6 +38,11 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#">YOUTUBE</a>
                         </li>
+                        {% if request.user.is_authenticated %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="/english-club">ENGLISH CLUB</a>
+                            </li>
+                        {% endif %}
                     </ul>
                     <ul class="navbar-nav ms-auto">
                         {% if not request.user.is_authenticated %}

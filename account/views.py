@@ -5,15 +5,21 @@ from django.http import HttpResponse
 from .forms import UserCreationForm, UserSignInForm, UserChangeForm
 from .models import *
 from blog.models import Article
+from club.models import Event
+from pytz import timezone
+from datetime import datetime
 
 def home(request):
     user = None
     if request.user.is_authenticated:
         user = request.user
     article = Article.objects.last()
+    asia = timezone('Asia/Taipei')
+    club = Event.objects.filter(start_time__gte=datetime.now().astimezone(asia)).order_by('start_time').first()
     return render(request, 'account/home.html', {
         'user': user,
         'article': article,
+        'club': club,
     })
 
 def signup(request):
@@ -41,11 +47,15 @@ def signin(request):
     error_link = None
     if request.POST:
         signin_form = UserSignInForm(request.POST)
+        redirect_url = request.POST.get('next', None)
         if signin_form.is_valid():
             user = authenticate(email=signin_form.cleaned_data['email'].lower(), password=signin_form.cleaned_data['password'])
             if user is not None:
                 login(request, user)
-                return redirect('/')
+                if redirect_url:
+                    return redirect(redirect_url)
+                else:
+                    return redirect('/')
             else:
                 email = signin_form.cleaned_data['email'].lower()
                 user = SiteUser.objects.filter(email=email).first()

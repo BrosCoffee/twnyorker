@@ -17,9 +17,10 @@
                     <div class="card home">
                         <div class="card-body">
                             <h4 class="card-title">THE LATEST ARTICLE</h4>
-                            <p class="card-text">{{ article.created_date|date:"M d, Y" }}</p>
+                            <p class="card-text">{{ article.created_date|date:"m/d/y" }}</p>
                             <p class="card-text">{{ article.title }}</p>
-                            <p class="card-text">{{ article.introduction|safe|truncatechars:150 }}<a href="{{ article.get_absolute_url }}" class="hyper-link"><span>Read more</span></a></p>
+                            <p class="card-text">{{ article.introduction|safe|truncatechars:150 }}</p>
+                            <p class="card-text text-end"><a href="{{ article.get_absolute_url }}" class="hyper-link"><span>Read more</span></a></p>
 
                         </div>
                     </div>
@@ -38,8 +39,8 @@
                     <div class="card home">
                         <div class="card-body">
                             <h4 class="card-title">ENGLISH CLUB</h4>
-                            <p class="card-text">Upcoming: 08/15/21</p>
-                            <p class="card-text">Click here to see available spots!</p>
+                            <p class="card-text">Upcoming: {{ club }}</p>
+                            <p class="card-text">Click <a href="/english-club" class="hyper-link"><span>here</span></a> to see available spots!</p>
                         </div>
                     </div>
                 </div>

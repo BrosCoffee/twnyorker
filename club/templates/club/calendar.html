@@ -1,0 +1,160 @@
+{% extends "account/base.html" %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'club/css/main.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'club/css/calendar.css' %}">
+<script src="{% static 'club/js/main.js' %}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'timeGridWeek',
+            height: 650,
+            allDaySlot: false,
+            nowIndicator: true,
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'timeGridWeek,dayGridMonth',
+            },
+            events: {{ events_list|safe }},
+            eventClick: onEventClick,
+            eventMouseEnter: onEventMouseEnter,
+            eventMouseLeave: onEventMouseLeave,
+        });
+
+        function onEventClick(info) {
+            let timeNow = new Date();
+            $.ajax({
+                type: 'POST',
+                url: '/english-club/',
+                data: {
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    'eventPk': info.event.extendedProps.eventPk,
+                    'userPk': {{ request.user.pk }},
+                    'timeNow': timeNow.toString(),
+                },
+                success: function (data) {
+                    // Step 1: Check past event - Done
+                    // Step 2: Check already booked - Done
+                    // Step 3: Check fully booked - Done
+                    // Step 4: Check age restrictions
+                    if (data.expired) {
+                        // TO-DO: Implement Swal instead of using window alert
+                        alert('Booking Deadline Passed!');
+                    } else {
+                        if (data.booked) {
+                            $('#bookModal').modal('show');
+                            $('#bookModalLabel').text(info.event.title);
+                            $('#submitBtn').text('Cancel Booking');
+                            // TO-DO: UX/UI improvement
+                            let eventHtml = `
+                                <div class="row">
+                                    <div class="col-4">Host: </div><div class="col-8">` + data.host + `</div>
+                                    <div class="col-4">Time: </div><div class="col-8">` + data.start_time + `-` + data.end_time +`</div>
+                                    <div class="col-4">Status: </div><div class="col-8">`+ data.num_participants + '/' + data.max_participants +` members <span>Booked</span></div>
+                                    <div class="col-4">Deadline: </div><div class="col-8">` + data.signup_deadline + `</div>
+                                </div>
+                            `
+                            if (data.note) {
+                                eventHtml += `
+                                    <div class="row">
+                                        <div class="col-4">Note: </div><div class="col-8">` + data.note + `</div>
+                                    </div>
+                                `
+                            }
+                            $('#bookModalContent').html(eventHtml);
+                            $('[name="eventAction"]').val('cancelEvent');
+                            $('[name="selectedUser"]').val({{ request.user.pk }});
+                            $('[name="selectedEvent"]').val(info.event.extendedProps.eventPk);
+                        } else {
+                            if (data.num_participants < data.max_participants) {
+                                if (data.age_restrictions_pass) {
+                                    $('#bookModal').modal('show');
+                                    $('#bookModalLabel').text(info.event.title);
+                                    let eventHtml = `
+                                        <div class="row">
+                                            <div class="col-4">Host: </div><div class="col-8">` + data.host + `</div>
+                                            <div class="col-4">Time: </div><div class="col-8">` + data.start_time + `-` + data.end_time +`</div>
+                                            <div class="col-4">Status: </div><div class="col-8">`+ data.num_participants + '/' + data.max_participants +` members</div>
+                                            <div class="col-4">Deadline: </div><div class="col-8">` + data.signup_deadline + `</div>
+                                        </div>
+                                    `
+                                    if (data.note) {
+                                        eventHtml += `
+                                            <div class="row">
+                                                <div class="col-4">Note: </div><div class="col-8">` + data.note + `</div>
+                                            </div>
+                                        `
+                                    }
+                                    $('#bookModalContent').html(eventHtml);
+                                    $('[name="eventAction"]').val('bookEvent');
+                                    $('[name="selectedUser"]').val({{ request.user.pk }});
+                                    $('[name="selectedEvent"]').val(info.event.extendedProps.eventPk);
+                                } else {
+                                    // TO-DO: Implement Swal instead of using window alert
+                                    let age_restrictions = data.age_restrictions;
+                                    if (age_restrictions === 'AD') {
+                                        alert('You must be older than 18 to book the event.');
+                                    } else {
+                                        alert('You must be younger than 18 to book the event.');
+                                    }
+                                }
+                            } else {
+                                // TO-DO: Implement Swal instead of using window alert
+                                alert('Fully Booked!');
+                            }
+                        }
+                    }
+                }
+            });
+
+        }
+
+        function onEventMouseEnter(info) {
+            console.log('mouse entered!');
+        }
+
+        function onEventMouseLeave(info) {
+            console.log('mouse left!');
+        }
+
+        calendar.render();
+
+        let form = $('#bookForm');
+        $('#submitBtn').on('click', function(){
+            console.log('book btn clicked!');
+            form.submit();
+        });
+    });
+</script>
+<div class="wrap">
+    {% include 'club/alerts.html' %}
+    <div class="container">
+        <div id='calendar'></div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="bookModal" tabindex="-1" aria-labelledby="bookModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="bookModalLabel"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="bookModalContent">
+            ...
+            </div>
+            <div class="modal-footer">
+                <form class="d-none" id="bookForm" method="post">
+                    {% csrf_token %}
+                    <input type="text" name="eventAction" value="">
+                    <input type="text" name="selectedUser" value="">
+                    <input type="text" name="selectedEvent" value="">
+                </form>
+                <button type="button" class="btn btn-primary" id="submitBtn">Book Now</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

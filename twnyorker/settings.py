@@ -42,6 +42,7 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
     'account.apps.AccountConfig',
     'blog.apps.BlogConfig',
+    'club.apps.ClubConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -114,7 +115,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'America/New_York'
+TIME_ZONE = 'Asia/Taipei'
 
 USE_I18N = True
 

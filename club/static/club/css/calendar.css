@@ -1,0 +1,52 @@
+.container {
+    background-color: #fff;
+}
+#calendar {
+    padding: 1rem;
+}
+.fc-col-header-cell-cushion {
+    text-decoration: none;
+    color: #000;
+}
+.fc-daygrid-day-number {
+    text-decoration: none;
+    color: #000;
+}
+.col-4 {
+    text-align: right;
+}
+.col-8 span {
+    border: green 1px solid;
+    border-radius: 5px;
+    padding:.15rem;
+    font-weight: 900;
+    color: green;
+}
+
+@media (min-width: 960px) {
+    .container {
+        margin-bottom: 5rem;
+        border-radius: 1rem;
+    }
+}
+
+@media (max-width: 960px) {
+    #calendar .fc-header-toolbar {
+        position: relative;
+        margin-top: 2.5em;
+        margin-bottom: 5px;
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+    .fc .fc-toolbar-title {
+        font-size: 1.5rem;
+        position: absolute;
+        text-align: center;
+        bottom: 140%;
+        left: 0;
+        width: 100%;
+    }
+    .fc-col-header-cell.fc-day {
+        font-size: .8rem;
+    }
+}
