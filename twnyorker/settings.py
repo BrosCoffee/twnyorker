@@ -15,6 +15,8 @@ import environ
 import os
 import dj_database_url
 import django_heroku
+from google.oauth2 import service_account
+import json
 
 env = environ.Env(
     # set casting, default value
@@ -138,10 +140,29 @@ STATICFILES_DIRS = (
     os.path.join(PROJECT_ROOT, 'static'),
 )
 
-MEDIA_URL = '/media/'
+if env('TWNYORKER_RUNLOCAL') == 'True':
+    MEDIA_URL = '/media/'
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+else:
+    MEDIA_URL = 'https://storage.googleapis.com/storage/'
+    DEFAULT_FILE_STORAGE = env('DEFAULT_FILE_STORAGE')
+    STATICFILES_STORAGE = env('STATICFILES_STORAGE')
+    GS_PROJECT_ID = env('GS_PROJECT_ID')
+    GS_BUCKET_NAME = env('GS_BUCKET_NAME')
+
+    # Reference: https://stackoverflow.com/questions/47446480/how-to-use-google-api-credentials-json-on-heroku/62536750#62536750
+    # the json credentials stored as env variable
+    json_str = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')
+    # generate json - if there are errors here remove newlines in .env
+    json_data = json.loads(json_str)
+    # the private_key needs to replace \n parsed as string literal with escaped newlines
+    json_data['private_key'] = json_data['private_key'].replace('\\n', '\n')
+
+    # use service_account to generate credentials object
+    GS_CREDENTIALS = service_account.Credentials.from_service_account_info(json_data)
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
