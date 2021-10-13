@@ -51,9 +51,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'gdstorage',
     'ckeditor',
     'ckeditor_uploader',
-    'storages',
 ]
 
 MIDDLEWARE = [
@@ -161,6 +161,7 @@ else:
 
     # use service_account to generate credentials object
     GS_CREDENTIALS = service_account.Credentials.from_service_account_info(json_data)
+    GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE = json_data
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
