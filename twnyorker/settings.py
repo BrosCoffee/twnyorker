@@ -146,7 +146,7 @@ if env('TWNYORKER_RUNLOCAL') == 'True':
     MEDIA_URL = '/media/'
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 else:
-    MEDIA_URL = 'https://storage.googleapis.com/storage/'
+    MEDIA_URL = 'https://storage.googleapis.com/'
     DEFAULT_FILE_STORAGE = env('DEFAULT_FILE_STORAGE')
     STATICFILES_STORAGE = env('STATICFILES_STORAGE')
     GS_PROJECT_ID = env('GS_PROJECT_ID')
