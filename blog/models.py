@@ -21,6 +21,14 @@ class Article(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.title)
+        # Remove the Google Cloud Storage credential url extention
+        if '?X-Goog-Algorithm=' in self.content:
+            content_list = self.content.split('?X-Goog-Algorithm=')
+            content_str = content_list.pop(0) + '"'
+            # Hard code removing the rest of the credential info
+            for item in content_list:
+                content_str += item[759::] + '"'
+            self.content = content_str[:-1]
         return super().save(*args, **kwargs)
 
 class Tag(models.Model):
