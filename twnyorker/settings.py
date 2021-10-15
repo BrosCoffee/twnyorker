@@ -145,6 +145,7 @@ STATICFILES_DIRS = (
 if env('TWNYORKER_RUNLOCAL') == 'True':
     MEDIA_URL = '/media/'
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+    GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE = None
 else:
     MEDIA_URL = 'https://storage.googleapis.com/twnyorker/media/'
     DEFAULT_FILE_STORAGE = env('DEFAULT_FILE_STORAGE')
