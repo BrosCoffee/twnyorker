@@ -1,0 +1,15 @@
+{% extends "account/base.html" %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'blog/css/article_detail.css' %}">
+<div class="wrap">
+    <div class="container">
+        <div class="card" id="article_detail">
+            <div class="card-body">
+                {{ about_page_content|safe }}
+            </div>
+        </div>
+    </div>
+    <div style="height: 5rem; position: relative;"></div>
+</div>
+{% endblock%}

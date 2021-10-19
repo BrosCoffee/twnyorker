@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .forms import UserCreationForm, UserSignInForm, UserChangeForm
 from .models import *
-from blog.models import Article
+from blog.models import Article, AboutArticle
 from club.models import Event
 from pytz import timezone
 from datetime import datetime
@@ -13,7 +13,7 @@ def home(request):
     user = None
     if request.user.is_authenticated:
         user = request.user
-    article = Article.objects.last()
+    article = Article.objects.filter(aboutarticle__isnull=True).last()
     asia = timezone('Asia/Taipei')
     club = Event.objects.filter(start_time__gte=datetime.now().astimezone(asia)).order_by('start_time').first()
     return render(request, 'account/home.html', {
@@ -111,4 +111,10 @@ def settings(request):
         'create_form': create_form,
         'signup': signup,
         'user': user,
+    })
+
+def about(request):
+    about_page_content = AboutArticle.objects.last().content if AboutArticle.objects.last() else None
+    return render(request, 'account/about.html', {
+        'about_page_content': about_page_content,
     })

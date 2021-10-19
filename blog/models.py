@@ -41,3 +41,8 @@ class Tag(models.Model):
     def save(self, *args, **kwargs):
         self.title = self.title.replace(' ', '-').lower()
         return super().save(*args, **kwargs)
+
+class AboutArticle(Article):
+    '''
+    Utilize the Article model. The About page contents can be modified easily.
+    '''

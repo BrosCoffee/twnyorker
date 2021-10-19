@@ -10,7 +10,7 @@ class ArticleListView(ListView):
     def get_queryset(self):
         title = self.request.GET.get('title', '')
         tag = self.request.GET.get('tag', '')
-        object_list = self.model.objects.all().order_by('-created_date')
+        object_list = self.model.objects.all().filter(aboutarticle__isnull=True).order_by('-created_date')
         tag_obj = get_object_or_404(Tag, title=tag) if tag else None
         if title and tag_obj:
             object_list = object_list.filter(title__icontains=title, tags=tag_obj)
