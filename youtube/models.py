@@ -8,6 +8,7 @@ class Youtube(models.Model):
     tags = models.ManyToManyField('blog.Tag', blank=True)
     youtube_url = models.URLField(max_length=300)
     youtube_embed_html = models.TextField()
+    youtube_embed_url = models.URLField(max_length=300)
     description = RichTextUploadingField(blank=True, null=True)
     slug = models.SlugField(null=False, unique=True)
 
