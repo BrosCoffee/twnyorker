@@ -123,6 +123,15 @@ ul.post-meta {
     background-color: #00cecb;
     border-color: #00cecb;
 }
+#youtubeIframe {
+    width: 100%;
+    height: 500px;
+}
+#dummyIframe {
+    width: 100%;
+    height: auto;
+    pointer-events: none;
+}
 @media (max-width: 1500px) {
     .bg {
         clip-path: inset(500px 0 0);
@@ -192,6 +201,10 @@ ul.post-meta {
     .bg-text {
         top: 7rem;
         padding: .5rem;
+    }
+    #youtubeIframe {
+        width: 100%;
+        height: 210px;
     }
 }
 /*iPad Pro*/

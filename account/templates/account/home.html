@@ -29,9 +29,11 @@
                     <div class="card home">
                         <div class="card-body">
                             <h4 class="card-title">THE LATEST VIDEO</h4>
-                            <div id="youtube_embed">
-                                <iframe width="100%" src="https://www.youtube.com/embed/YZGB9UFMXEQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                            </div>
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#youtubeModal">
+                                <div id="youtube_embed">
+                                    <iframe id="dummyIframe" src="{{ video.youtube_embed_url|safe }}" title="The latest Taiwan New Yorker video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                </div>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -48,4 +50,34 @@
         </div>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="youtubeModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="youtubeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="youtubeModalLabel">{{ video.title }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="youtubeModalContent">
+                <iframe id="youtubeIframe" src="{{ video.youtube_embed_url|safe }}" title="The latest Taiwan New Yorker video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function(){
+        /*
+        Source: stackoverflow.com/questions/48399390/youtube-embed-autoplay-on-mobile
+        The reason that video autoplay doesn’t work is simple. The feature is deliberately disabled in both iOS and Android for mobile devices. The reason this is done is to save mobile users money. Such devices (especially mobile phones) often use data connections that charge by bandwidth. They have data limits and going over results in a fee.
+        */
+        let youtubeSrc = $('#youtubeIframe').attr('src');
+        let autoplaySrc = youtubeSrc + '?autoplay=1';
+        $('#youtube_embed, #youtubeNavId').click(function(){
+            $('#youtubeIframe').attr("src", autoplaySrc);
+        });
+        $('#youtubeModal .btn-close').click(function(){
+            $('#youtubeIframe').attr("src", youtubeSrc);
+        });
+    });
+</script>
 {% endblock%}
