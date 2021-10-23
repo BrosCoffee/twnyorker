@@ -201,11 +201,11 @@ CKEDITOR_CONFIGS = {
         'toolbar': 'Custom',
         'toolbar_Custom': [
             ["Format", "Styles", "FontSize"],
-            ["Bold", "Italic", "Underline", "Strike", "SpellChecker", 'Undo', "Image", "Table", "Link", "Unlink"],
+            ["Bold", "Italic", "Underline", "Strike", "SpellChecker", 'Undo', "Image", "Iframe", "Table", "Link", "Unlink"],
             ['NumberedList', 'BulletedList', "Indent", "Outdent", 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
         ],
         'resize_enabled': False,
-        'skin': 'moono',
+        'skin': 'moono-lisa',
         'height': 420,
         'width': '100%',
     }
