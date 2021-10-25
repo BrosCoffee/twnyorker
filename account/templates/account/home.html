@@ -42,6 +42,9 @@
                         <div class="card-body">
                             <h4 class="card-title">ENGLISH CLUB</h4>
                             <p class="card-text">Upcoming: {{ club }}</p>
+                            {% if club.note %}
+                                <p class="card-text">{{ club.note }}</p>
+                            {% endif %}
                             <p class="card-text">Click <a href="/english-club" class="hyper-link"><span>here</span></a> to see available spots!</p>
                         </div>
                     </div>
