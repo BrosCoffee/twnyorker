@@ -58,7 +58,10 @@ footer span {
     height: auto;
 }
 .card {
-    height: 15rem;
+    height: auto;
+}
+.card.youtube {
+    height: 18rem;
 }
 .container {
     margin-top: 5rem;
@@ -129,7 +132,7 @@ ul.post-meta {
 }
 #dummyIframe {
     width: 100%;
-    height: auto;
+    height: 13.5rem;
     pointer-events: none;
 }
 @media (max-width: 1500px) {
