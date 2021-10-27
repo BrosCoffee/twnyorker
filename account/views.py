@@ -6,7 +6,7 @@ from .forms import UserCreationForm, UserSignInForm, UserChangeForm
 from .models import *
 from blog.models import Article, AboutArticle
 from club.models import Event
-from youtube.models import Youtube
+from youtube.models import Video
 from pytz import timezone
 from datetime import datetime
 
@@ -17,7 +17,7 @@ def home(request):
     article = Article.objects.filter(aboutarticle__isnull=True).last()
     asia = timezone('Asia/Taipei')
     club = Event.objects.filter(start_time__gte=datetime.now().astimezone(asia)).order_by('start_time').first()
-    video = Youtube.objects.last()
+    video = Video.objects.last()
     return render(request, 'account/home.html', {
         'user': user,
         'article': article,
