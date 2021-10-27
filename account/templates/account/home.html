@@ -40,7 +40,7 @@
                 <div class="col-12 col-md-4">
                     <div class="card home">
                         <div class="card-body">
-                            <h4 class="card-title">ENGLISH CLUB</h4>
+                            <h4 class="card-title">ENGLISH CLUB <i class="fas fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="Members Only"></i></h4>
                             <p class="card-text">Upcoming: {{ club }}</p>
                             {% if club.note %}
                                 <p class="card-text">{{ club.note }}</p>
@@ -58,7 +58,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="youtubeModalLabel">{{ video.title }}</h5>
+                <h5 class="modal-title" id="youtubeModalLabel">{{ video.title }} <i class="fas fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ video.description }}"></i></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="youtubeModalContent">
