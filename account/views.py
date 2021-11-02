@@ -9,6 +9,7 @@ from club.models import Event
 from youtube.models import Video
 from pytz import timezone
 from datetime import datetime
+from .utils import new_user_notification
 
 def home(request):
     user = None
@@ -38,6 +39,7 @@ def signup(request):
                 date_of_birth=create_form.cleaned_data['date_of_birth'],
                 password=create_form.cleaned_data['password1'],
             )
+            new_user_notification(request, user)
             login(request, user)
             return redirect('/')
         else:
