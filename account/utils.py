@@ -7,6 +7,6 @@ def new_user_notification(request, user):
     # message = user.get_full_name() + ' age: ' + str(user.age())
     html_message = render_to_string('account/new_user_notification.html', {'user': user})
     email_from = settings.EMAIL_HOST_USER
-    recipient_list = ['raymondcyang0219@gmail.com',]
+    recipient_list = settings.EMAIL_RECIPIENT_LIST.split(',')
     send_mail(subject, '', email_from, recipient_list, html_message=html_message,)
     return
