@@ -21,6 +21,7 @@ from django.conf.urls.static import static
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 from ckeditor_uploader import views as ckeditor_views
+from django.views.generic import TemplateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,4 +31,6 @@ urlpatterns = [
     path('ckeditor/', include('ckeditor_uploader.urls')),
     url(r'^ckeditor/upload/', login_required(ckeditor_views.upload), name='ckeditor_upload'),
     url(r'^ckeditor/browse/', never_cache(login_required(ckeditor_views.browse)), name='ckeditor_browse'),
+    path('api/', include('topic.urls')),
+    path('topic-vote', TemplateView.as_view(template_name='index.html')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
