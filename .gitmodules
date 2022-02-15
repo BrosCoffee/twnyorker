@@ -1,4 +1,3 @@
 [submodule "frontend"]
-	ignore = untracked
 	path = frontend
-	url = https://github.com/BrosCoffee/frontend
+	url = https://github.com/BrosCoffee/frontend/
